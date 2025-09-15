@@ -1,0 +1,6 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <ui:Label text="Label" />
+    <ui:Button text="Load" />
+    <ui:Button text="Save" />
+    <ui:Button text="Refresh" />
+</ui:UXML>
