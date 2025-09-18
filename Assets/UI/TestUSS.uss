@@ -1,0 +1,27 @@
+:root {
+}
+
+.disabled * {
+    -unity-picking-mode: ignore;
+    opacity: 0.5;
+}
+
+.no-transition {
+    transition: none !important;
+}
+
+.AnimOut {
+    translate: 0 -218px;
+    opacity: 1;
+    transition-property: translate, opacity;
+    transition-duration: 2.5s, 2.5s;
+}
+
+.AnimIn {
+    translate: 0 0;
+    opacity: 1;
+    transition-property: translate, opacity;
+    transition-duration: 2.5s, 2.5s;
+}
+
+

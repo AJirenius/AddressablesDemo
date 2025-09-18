@@ -1,0 +1,9 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI/TestUSS.uss?fileID=7433441132597879392&amp;guid=e3eb3bbb371dab94fab9bad87d5d30ea&amp;type=3#TestUSS" />
+    <ui:VisualElement name="VisualElement" style="flex-direction: row; flex-wrap: nowrap; align-self: center; justify-content: center; align-content: auto;">
+        <ui:Label text="Label" />
+        <ui:Button text="Load" name="Button1" />
+        <ui:Button text="Save" />
+        <ui:Button text="Refresh" />
+    </ui:VisualElement>
+</ui:UXML>
