@@ -1,27 +1,44 @@
 :root {
 }
 
+.screen {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+
+}
+
 .disabled * {
     -unity-picking-mode: ignore;
-    opacity: 0.5;
+    opacity: 0.25;
 }
 
 .no-transition {
     transition: none !important;
 }
 
-.AnimOut {
-    translate: 0 -218px;
-    opacity: 1;
+.animOut {
+    translate: 0 -118px;
+    opacity: 0 !important;
     transition-property: translate, opacity;
-    transition-duration: 2.5s, 2.5s;
+    transition-duration: 0.3s, 0.3s;
 }
 
-.AnimIn {
+.animIn {
     translate: 0 0;
     opacity: 1;
     transition-property: translate, opacity;
-    transition-duration: 2.5s, 2.5s;
+    transition-duration: 0.3s, 0.3s;
+}
+
+.hidden {
+    display: none !important;
 }
 
 

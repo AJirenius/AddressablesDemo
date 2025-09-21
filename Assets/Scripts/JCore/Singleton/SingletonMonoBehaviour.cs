@@ -14,7 +14,7 @@ namespace JCore
             {
                 if (!instance)
                 {
-                    instance = FindObjectOfType(typeof(T)) as T;
+                    instance = FindAnyObjectByType(typeof(T)) as T;
                     if (!instance)
                     {
                         Debug.Log("There needs to be one active SingletonMonoBehaviour script on a GameObject in your scene. (" + typeof(T) + ")");

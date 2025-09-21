@@ -4,7 +4,7 @@ using UnityEngine.UIElements;
 
 namespace GameUI
 {
-    public class Screen2:AView
+    public class Screen2:AScreen
     {
         public override void Initialize()
         {
@@ -20,7 +20,7 @@ namespace GameUI
         private void OnButtonClick()
         {
             Debug.Log("Button2 was clicked!");
-            ScreenManager.Instance.ShowScreen("Screen1");
+            ScreenManager.Instance.AddToQueue("Screen1");
         }
 
         protected override void OnAnimInStart()

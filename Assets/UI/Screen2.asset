@@ -9,10 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 0}
+  m_Script: {fileID: 11500000, guid: 9689e2b3941544c29d02daf865f64eae, type: 3}
   m_Name: Screen2
-  m_EditorClassIdentifier: Assembly-CSharp:NUUI:ScreenSO
+  m_EditorClassIdentifier: Assembly-CSharp::NUUI.ScreenSO
   id: Screen2
   uxml: {fileID: 9197481963319205126, guid: 704d266fb3aae29448722f7c98347e6a, type: 3}
   animStyleName: North
+  isPopup: 0
   controllerClassName: GameUI.Screen2

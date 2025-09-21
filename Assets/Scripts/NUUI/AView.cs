@@ -19,13 +19,13 @@ namespace NUUI
         
         public virtual void Initialize()
         {
-            SetState(ViewState.Inactive);
+            SetState(ViewState.Hidden);
             
             Root.RegisterCallback<TransitionEndEvent>(evt =>
             {
                 Debug.Log("some transition finished!");
 
-                if (evt.stylePropertyNames.Contains("transform"))
+                if (evt.stylePropertyNames.Contains("translate"))
                 {
                     switch (currentState )
                     {
@@ -59,7 +59,7 @@ namespace NUUI
 
         public void DisableInteraction()
         {
-            SetState(ViewState.InteractionDisabled);
+            SetState(ViewState.Inactive);
         }
         
         private void AnimInDone()
@@ -70,52 +70,61 @@ namespace NUUI
 
         private void AnimOutDone()
         {
-            SetState(ViewState.Inactive);
+            SetState(ViewState.Hidden);
             OnAnimOutEnd();
+        }
+        
+        void SetPickingModeRecursive(VisualElement element, PickingMode mode)
+        {
+            element.pickingMode = mode;
+            foreach (var child in element.Children())
+                SetPickingModeRecursive(child, mode);
         }
         
         private void SetState(ViewState state)
         {
             if ((state == ViewState.AnimatingIn && currentState == ViewState.Active) ||
-                (state == ViewState.AnimatingOut && currentState == ViewState.Inactive) ||
+                (state == ViewState.AnimatingOut && currentState == ViewState.Hidden) ||
                 currentState == state) return;
             currentState = state;
             Debug.Log(ID + " : Set state - " + currentState);
             
             switch (state)
             {
+                case ViewState.Hidden:
+                    Root.AddToClassList("hidden");
+                    Root.AddToClassList("no-transition");
+                    Root.AddToClassList("animOut");
+                    SetPickingModeRecursive(Root, PickingMode.Ignore);
+                    break;
+                
                 case ViewState.Inactive:
-                    Root.AddToClassList("Disabled");
+                    Root.AddToClassList("disabled");
+                    SetPickingModeRecursive(Root, PickingMode.Ignore);
                     break;
 
                 case ViewState.AnimatingIn:
-                    Root.AddToClassList("AnimOut");
-                    Root.AddToClassList("no-transition");
                     Root.schedule.Execute(() =>
                     {
+                        Root.RemoveFromClassList("hidden");
                         Root.RemoveFromClassList("no-transition");
-                        Root.RemoveFromClassList("AnimOut");
-                        Root.AddToClassList("AnimIn");
+                        Root.RemoveFromClassList("animOut");
+                        Root.AddToClassList("animIn");
+                        SetPickingModeRecursive(Root, PickingMode.Ignore);
+                        OnAnimInStart();
                     }).StartingIn(50);
-                    Root.AddToClassList("Disabled");
-                    OnAnimInStart();
+                    
                     break;
 
                 case ViewState.Active:
-                    //Root.RemoveFromClassList("Disabled");
+                    SetPickingModeRecursive(Root, PickingMode.Position);    
                     OnInteractionEnabled();
-                    break;
-
-                case ViewState.InteractionDisabled:
-                    Root.AddToClassList("Disabled");
-                    OnInteractionDisabled();
                     break;
                 
                 case ViewState.AnimatingOut:
-                    Root.RemoveFromClassList("no-transition");
-                    Root.RemoveFromClassList("AnimIn");
-                    Root.AddToClassList("AnimOut");
-                    Root.AddToClassList("Disabled");
+                    Root.RemoveFromClassList("animIn");
+                    Root.AddToClassList("animOut");
+                    SetPickingModeRecursive(Root, PickingMode.Ignore);
                     OnInteractionDisabled();
                     OnAnimOutStart();
                     break;
@@ -126,30 +135,12 @@ namespace NUUI
             }*/
         }
     }
-    
-    [CreateAssetMenu(menuName = "UI/Screen Definition")]
-    public class ScreenSO : ScriptableObject
-    {
-        [Header("View")]
-        public string id;
-        public VisualTreeAsset uxml;
-        public string animStyleName;
-
-        [Header("Controller")]
-        public string controllerClassName; 
-        // e.g. "InventoryScreen" – must implement IScreen
-    }
-    
-    [Serializable]
-    public class ScreenDefinition
-    {
-        public string ID;
-        public string uxmlPath;        // e.g. "UI/MainMenu.uxml"
-        public string ControllerClass; 
-        // creates the code-behind controller that implements IScreen
-    }
-    
-    
-    public enum ViewState { Init, Inactive, AnimatingIn, Active, InteractionDisabled, AnimatingOut }
+ 
+    public enum ViewState { Init, 
+        Hidden, // totally hidden from player. Normally at start or after animating out.
+        Inactive, // Visible but not interactable. eg. under another screen.
+        AnimatingIn, 
+        Active, // when animIn finished and all is interactable.
+        AnimatingOut }
     
 }
